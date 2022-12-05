@@ -10,3 +10,8 @@ Timestamp: Tue Nov 29 2022 11:46:58 GMT-0500 (Eastern Standard Time)
 URL: /favicon.ico
 Timestamp: Tue Nov 29 2022 11:46:58 GMT-0500 (Eastern Standard Time)
 
+::1 - - [05/Dec/2022:21:24:14 +0000] "GET /secreturl HTTP/1.1" 200 51 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [05/Dec/2022:21:24:14 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/secreturl" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [05/Dec/2022:21:26:33 +0000] "GET /secreturl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [05/Dec/2022:21:26:35 +0000] "GET /secreturl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [05/Dec/2022:21:26:36 +0000] "GET /secreturl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"

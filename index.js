@@ -1,14 +1,17 @@
 const express = require("express");
 const { json } = require("body-parser");
-(bodyParser = require("body-parser")), 
-(uuid = require("uuid"));
+(bodyParser = require("body-parser")), (uuid = require("uuid"));
 const mongoose = require("mongoose");
-const models = require("./models.js");n
+const models = require("./models.js");
+n;
 const movies = models.Movie;
 const users = models.User;
 const genre = models.Genre;
 const director = models.Director;
-mongoose.connect('mongodb://localhost:8080/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost:8080/myFlixDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 const { title, emitWarning } = require("process");
 (morgan = require("morgan")), (fs = require("fs")), (path = require("path"));
 
@@ -23,55 +26,6 @@ const app = express();
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(bodyParser.json());
-
-
-
-let users = [
-    {
-        id: 1,
-        name: "Dan",
-        favoriteMovies: [],
-    },
-    {
-        id: 2,
-        name: "Sara",
-        favoriteMovies: ["The End", "duh start"],
-    },
-];
-
-
-let movies = [
-    {
-        Title: "The End",
-        Description: "lol",
-        Imgurl :"bsimgurl.com",
-        Genre: {
-            Name: "Comedy",
-            Description: "Comedies make people laugh",
-        },
-        Director: {
-            Name: "Ployni Almoni",
-            Bio: "Bio is the same as all other humans",
-            Born: "1985",
-        },
-    },
-
-    {
-        Title: "The beginning",
-        Description: "amazing sight",
-        Imgurl :"bsimgurl.com",
-        Genre: {
-            Name: "Drama",
-            Description: "Can bring one to tears"
-        },
-        Director: {
-            Name: "Almoni Ployni",
-            Bio: "Bio is the same as all other humans 1",
-            Born: 1650,
-        },
-    },
-];
-//get users
 
 //get users
 app.get("/users", (req, res) => {
@@ -93,37 +47,38 @@ app.post("/users", (req, res) => {
 });*/
 
 //create user wiht logic
- // I am going to add in the other 2 models once i get port 8080 working!!!
+// I am going to add in the other 2 models once i get port 8080 working!!!
 
-  app.post('/users', (req, res) => {
+app.post("/users", (req, res) => {
     Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) {
-          return res.status(400).send(req.body.Username + 'already exists');
-        } else {
-          Users
-            .create({
-              Username: req.body.Username,
-              Password: req.body.Password,
-              Email: req.body.Email,
-              Birthday: req.body.Birthday
-            })
-            .then((user) =>{res.status(201).json(user) })
-          .catch((error) => {
+        .then((user) => {
+            if (user) {
+                return res
+                    .status(400)
+                    .send(req.body.Username + "already exists");
+            } else {
+                Users.create({
+                    Username: req.body.Username,
+                    Password: req.body.Password,
+                    Email: req.body.Email,
+                    Birthday: req.body.Birthday,
+                })
+                    .then((user) => {
+                        res.status(201).json(user);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        res.status(500).send("Error: " + error);
+                    });
+            }
+        })
+        .catch((error) => {
             console.error(error);
-            res.status(500).send('Error: ' + error);
-          })
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      });
-  });
-
+            res.status(500).send("Error: " + error);
+        });
+});
 
 //end create user wiht logic
-
 
 app.delete("/users/:id", (req, res) => {
     res.status(200).send(`user Has been removed`);
@@ -216,3 +171,50 @@ app.get("/movies/director/:directorName", (req, res) => {
 app.listen(8080, () => {
     console.log("Your app is listening on port 8080");
 });
+
+//   //old array 1
+//   let users = [
+//     {
+//         id: 1,
+//         name: "Dan",
+//         favoriteMovies: [],
+//     },
+//     {
+//         id: 2,
+//         name: "Sara",
+//         favoriteMovies: ["The End", "duh start"],
+//     },
+// ];
+
+
+// let movies = [
+//     {
+//         Title: "The End",
+//         Description: "lol",
+//         Imgurl :"bsimgurl.com",
+//         Genre: {
+//             Name: "Comedy",
+//             Description: "Comedies make people laugh",
+//         },
+//         Director: {
+//             Name: "Ployni Almoni",
+//             Bio: "Bio is the same as all other humans",
+//             Born: "1985",
+//         },
+//     },
+
+//     {
+//         Title: "The beginning",
+//         Description: "amazing sight",
+//         Imgurl :"bsimgurl.com",
+//         Genre: {
+//             Name: "Drama",
+//             Description: "Can bring one to tears"
+//         },
+//         Director: {
+//             Name: "Almoni Ployni",
+//             Bio: "Bio is the same as all other humans 1",
+//             Born: 1650,
+//         },
+//     },
+// ];

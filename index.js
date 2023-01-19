@@ -1,27 +1,30 @@
-// try to fix code
-const express = require('express')
-// new code
+const express = require("express");
 const { json } = require("body-parser");
-bodyParser = require("body-parser"),
-uuid = require("uuid");
-//end new code
+(bodyParser = require("body-parser")), 
+(uuid = require("uuid"));
+const mongoose = require("mongoose");
+const models = require("./models.js");n
+const movies = models.Movie;
+const users = models.User;
+const genre = models.Genre;
+const director = models.Director;
+mongoose.connect('mongodb://localhost:8080/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 const { title, emitWarning } = require("process");
-  morgan = require('morgan'),
-  fs = require('fs'),
-  path = require('path'); 
+(morgan = require("morgan")), (fs = require("fs")), (path = require("path"));
 
-//const app = express();// note to self look into  why i got error 
+//const app = express();// note to self look into  why i got error
 // populates log.txt
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
-
-// setup the logger
-app.use(morgan('combined', {stream: accessLogStream}));
-
-//New code
-
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
+    flags: "a",
+});
 const app = express();
 
+// setup the logger
+app.use(morgan("combined", { stream: accessLogStream }));
+
 app.use(bodyParser.json());
+
+
 
 let users = [
     {
@@ -70,71 +73,99 @@ let movies = [
 ];
 //get users
 
+//get users
 app.get("/users", (req, res) => {
-    res.status(201).json(users)
-    
- });
+    res.status(201).json(users);
+});
 
-// CREATE new user not working as of now
+//old hard coded way for createing user/without logic
+/*
 app.post("/users", (req, res) => {
     const newUser = req.body;
 
     if (newUser.name) {
         newUser.id = uuid.v4();
         users.push(newUser);
-        res.status(201).json(newUser)
+        res.status(201).json(newUser);
     } else {
-        res.status(400).send("user is missing a name")
+        res.status(400).send("user is missing a name");
     }
-    
- });
+});*/
 
- app.delete("/users/:id", (req, res) => {
+//create user wiht logic
+ // I am going to add in the other 2 models once i get port 8080 working!!!
+
+  app.post('/users', (req, res) => {
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + 'already exists');
+        } else {
+          Users
+            .create({
+              Username: req.body.Username,
+              Password: req.body.Password,
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })
+            .then((user) =>{res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
+
+
+//end create user wiht logic
+
+
+app.delete("/users/:id", (req, res) => {
     res.status(200).send(`user Has been removed`);
-   
-    
- });
+});
 
-
-
-//UPDATE/PUT update exsisting user info 
-app.put ("/users/:id", (req, res) =>{
-    const id  = req.params.id;
+//UPDATE/PUT update exsisting user info
+app.put("/users/:id", (req, res) => {
+    const id = req.params.id;
     const updatedUser = req.body;
 
-    let user = users.find (user => user.id == id);
+    let user = users.find((user) => user.id == id);
 
     if (user) {
         user.name = updatedUser.name;
-        res.status (200).json(user);
+        res.status(200).json(user);
     } else {
-        res.status(400).send("User not found")
+        res.status(400).send("User not found");
     }
 });
 
 //UPDATE/postadd/update users favorite movie and put out a message
-app.post ("/users/:id/:movieTitle", (req, res) =>{
-    const { id,  movieTitle } = req.params;
-    const updatedUser = req.body;
+app.post("/users/:id/:movieTitle", (req, res) => {
+    const { id, movieTitle } = req.params;
 
-    let user = users.find (user => user.id == id);
+    let user = users.find((user) => user.id == id);
 
     if (user) {
         user.favoriteMovies.push(movieTitle);
-        res.status(200).send(`${movieTitle} Has been added to user ${id}'s array`);
+        res.status(200).send(
+            `${movieTitle} Has been added to user ${id}'s array`
+        );
     } else {
-        res.status(400).send("User not found")
+        res.status(400).send("User not found");
     }
 });
 
-app.delete ("/users/:id/:movieTitle", (req, res) =>{
-    const { id,  movieTitle } = req.params;
-    const updatedUser = req.body;
-    res.status(200).send(`${movieTitle} Has been removed for user ${id}'s array`);
-
+app.delete("/users/:id/:movieTitle", (req, res) => {
+    const { id, movieTitle } = req.params;
+    res.status(200).send(
+        `${movieTitle} Has been removed for user ${id}'s array`
+    );
 });
-
-
 
 //READ full movie list
 app.get("/movies", (req, res) => {
@@ -156,7 +187,9 @@ app.get("/movies/:title", (req, res) => {
 //READ  Find moives based on Genre
 app.get("/movies/genre/:genreName", (req, res) => {
     const genreName = req.params.genreName;
-    const foundMovies = movies.find(movie => movie.Genre.Name.toLowerCase() == genreName.toLowerCase());
+    const foundMovies = movies.find(
+        (movie) => movie.Genre.Name.toLowerCase() == genreName.toLowerCase()
+    );
 
     if (foundMovies) {
         res.status(200).json(foundMovies);
@@ -168,7 +201,9 @@ app.get("/movies/genre/:genreName", (req, res) => {
 //READ  Find based on director name
 app.get("/movies/director/:directorName", (req, res) => {
     const directorName = req.params.directorName;
-    const foundMovies = movies.find((movie) => movie.Director.Name == directorName);
+    const foundMovies = movies.find(
+        (movie) => movie.Director.Name == directorName
+    );
 
     if (foundMovies) {
         res.status(200).json(foundMovies);
@@ -177,73 +212,7 @@ app.get("/movies/director/:directorName", (req, res) => {
     }
 });
 
-
 //port 808 listen
 app.listen(8080, () => {
     console.log("Your app is listening on port 8080");
 });
-
-
-
-//old code
-// let fantasticFilms = [
-//   {
-//     Title: 'A Few Good Men',
-//     Director: 'Rob Reiner'
-//   },
-//   {
-//     Title: 'Lucky Number Slevin',
-//     Director: 'Andrew Hulme'
-//   },
-//   {
-//     Title: 'Blazing Saddles',
-//     Director: 'Mel Brooks'
-//   },
-//   {
-//     Title: 'The Usual Suspects',
-//     Director: 'Bryan Singer'
-//   },
-//   {
-//     Title: 'The Godfather',
-//     Director: 'Francis Ford Coppola'
-//   },
-//   {
-//     Title: 'Die Hard',
-//     Director: 'John McTiernan'
-//   },
-//   {
-//     Title: 'Léon: The Professional',
-//     Director: 'Luc Besson'
-//   },
-//   {
-//     Title: 'Operation Finale',
-//     Director: 'Chris Weitz'
-//   },
-//   {
-//     Title: 'The Punisher (1989 film)',
-//     Director: 'Mark Goldblatt'
-//   },
-//   {
-//     Title: 'Scarface',
-//     Director: 'Brian De Palma'
-//   }
-
-// ];
-
-// // GET requests
-// app.get('/documentation', (req, res) => {                  
-//   res.sendFile('public/documentation.html', { root: __dirname });
-// });
-
-// app.get('/movies', (req, res) => {
-//   res.json(fantasticFilms);
-// });
-
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send('Uh Oh Something Isnt Right!');
-// });
-
-// app.listen(8080, () => {
-//   console.log('Your app is listening on port 8080.');
-// });

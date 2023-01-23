@@ -1,12 +1,12 @@
 const { default: mongoose } = require("mongoose");
 let movieSchema = mongoose.Schema({
-    TItle:{type:String, required: true},
+    Title:{type:String, required: true},
     Description: {type: String, required: true},
     Genre: {
         Name: String,
         Description: String
     },
-    DIrector: {
+    Director: {
         Name: String,
         Bio: String
     }
@@ -19,6 +19,8 @@ let userSchema = mongoose.Schema({
     Birthday: Date,
     FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
   });
+
+  // I am going to add in the other 2 models once i get port 8080 working!!!
   
   let Movie = mongoose.model('Movie', movieSchema);
   let User = mongoose.model('User', userSchema);

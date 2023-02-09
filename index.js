@@ -12,6 +12,10 @@ mongoose.connect("mongodb+srv://admin:Mydb123@myflixdb.1fpv2cv.mongodb.net/myfli
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
+// allowing origns for corrs
+let allowedOrigins = ["http://localhost:8080", "https://zalmy-myflix.herokuapp.com","http://zalmy-myflix.herokuapp.com"]
+
 const db = mongoose.connection;
 const { title, emitWarning } = require("process");
 (morgan = require("morgan")), (fs = require("fs")), (path = require("path"));
@@ -28,10 +32,9 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// cors
 // cors access conrol
 const cors = require("cors");
-app.use(cors());
+// app.use(cors());
 
 
 

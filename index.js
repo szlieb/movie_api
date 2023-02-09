@@ -8,7 +8,7 @@ const models = require("./models.js");
 const bcrypt = require("bcrypt");
 // end bcrypt
 
-mongoose.connect("mongodb://127.0.0.1:27017/myFlix", {
+mongoose.connect("mongodb+srv://admin:Mydb123@myflixdb.1fpv2cv.mongodb.net/myflixdb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -33,8 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
 
-//not sure i understand tihs part
-//let allowedOrigins = ["http://heroku goes here", "http://testsite.com"];
+
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -65,42 +64,11 @@ app.get("/", (req, res) => {
     res.send("Welcome to Movie app!!");
 });
 
-//create user old
-// app.post("/users", (req, res) => {
-//     users
-//         .findOne({ Username: req.body.Username })
-//         .then((user) => {
-//             console.log(user);
-//             if (user) {
-//                 return res
-//                     .status(400)
-//                     .send(req.body.Username + "already exists");
-//             } else {
-//                 users
-//                     .create({
-//                         Username: req.body.Username,
-//                         Password: req.body.Password,
-//                         Email: req.body.Email,
-//                         Birthday: req.body.Birthday,
-//                     })
-//                     .then((user) => {
-//                         res.status(201).json(user);
-//                     })
-//                     .catch((error) => {
-//                         console.error(error);
-//                         res.status(500).send("Error: " + error);
-//                     });
-//             }
-//         })
-//         .catch((error) => {
-//             console.error(error);
-//             res.status(500).send("Error: " + error);
-//         });
-// });
 
 
 
-//Create user new with hashing with hash
+
+//Create user new with hashing
 app.post("/users",
 [
     check("Username", "Username is required.").isLength({min: 5}),

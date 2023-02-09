@@ -8,7 +8,7 @@ const models = require("./models.js");
 const bcrypt = require("bcrypt");
 // end bcrypt
 
-mongoose.connect("mongodb+srv://admin:Mydb123@myflixdb.1fpv2cv.mongodb.net/myflixdb?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://admin:Mydb123@myFlixDB.1fpv2cv.mongodb.net/myFlixDB?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

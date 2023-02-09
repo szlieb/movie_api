@@ -1,3 +1,6 @@
+//bcrypt
+const bcrypt = require("bcrypt");
+
 const { default: mongoose } = require("mongoose");
 let movieSchema = mongoose.Schema({
     Title:{type:String, required: true},
@@ -20,7 +23,15 @@ let userSchema = mongoose.Schema({
     FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
   });
 
-  // I am going to add in the other 2 models once i get port 8080 working!!!
+userSchema.statics.hashPassword = (password) => {
+    // return bcrypt.hashSync(password, 10);
+    return password;
+};
+userSchema.methods.validatePassword = function (password) {
+    return bcrypt.compareSync(password, this.Password)
+}
+
+
   
   let Movie = mongoose.model('Movie', movieSchema);
   let User = mongoose.model('User', userSchema);

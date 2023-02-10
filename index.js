@@ -50,7 +50,7 @@ app.use(
             if (allowedOrigins.indexOf(origin) === -1) {
                 // If a specific origin isn’t found on the list of allowed origins
                 let message =
-                    "The CORS policy for this application doesn’t allow access from origin" +
+                    "The CORS policy for this application doesnt allow access from origin" +
                     origin;
                 return callback(new Error(message), false);
             }
@@ -74,7 +74,7 @@ const director = models.Director;
 const { check, validationResult } = require("express-validator");
 
 app.get("/", (req, res) => {
-    res.send("Welcome to Movie app!!");
+    res.send("Welcome To The number One Place For Film & Movie Enthusists");
 });
 
 //Create user new with hashing

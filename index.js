@@ -55,7 +55,6 @@ const director = models.Director;
 const { check, validationResult } = require("express-validator");
 
 app.get("/", (req, res) => {
-  //res.send("Welcome To The number One Place For Film & Movie Enthusists");
   res.sendFile(path.join(__dirname, "/public/documentation.html"));
 });
 

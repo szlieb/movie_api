@@ -9,12 +9,13 @@ const bcrypt = require("bcrypt");
 // end bcrypt
 
 mongoose.connect(
-  "mongodb+srv://admin:Mydb123@myFlixDB.1fpv2cv.mongodb.net/myFlixDB?retryWrites=true&w=majority",
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@myFlixDB.1fpv2cv.mongodb.net/myFlixDB?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }
 );
+
 
 const db = mongoose.connection;
 const { title, emitWarning } = require("process");

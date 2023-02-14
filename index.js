@@ -1,3 +1,4 @@
+const dotenv = require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const uuid = require("uuid");
@@ -54,7 +55,8 @@ const director = models.Director;
 const { check, validationResult } = require("express-validator");
 
 app.get("/", (req, res) => {
-  res.send("Welcome To The number One Place For Film & Movie Enthusists");
+  //res.send("Welcome To The number One Place For Film & Movie Enthusists");
+  res.sendFile(path.join(__dirname, "/public/documentation.html"));
 });
 
 //Create user new with hashing
